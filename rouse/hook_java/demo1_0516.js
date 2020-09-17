@@ -29,4 +29,4 @@ function main() {
     }
 }
 
-    setImmediate(main);
+setImmediate(main);
