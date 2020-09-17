@@ -13,7 +13,8 @@ sha1:d5e343d453aecca8b14b2dc687c381cacityId=110000condition=fullFilters=1latitud
 import base64
 import hashlib
 
-def get_secret(res:str):
+
+def get_secret(res: str):
     import hashlib
     """
     使用sha1加密算法，返回str加密后的字符串
@@ -22,6 +23,7 @@ def get_secret(res:str):
     encrypts = sha.hexdigest()
     print(encrypts)
     return encrypts
+
 
 # get_secret('d5e343d453aecca8b14b2dc687c381cacityId=110000condition=fullFilters=1latitude=39.936895longitude=116.60848page=1request_ts=1596334463sugTitle=')
 encrypt = "d5e343d453aecca8b14b2dc687c381cacityId=110000condition=fullFilters=1latitude=39.936895longitude=116.60848page=1request_ts=1596335056sugTitle="

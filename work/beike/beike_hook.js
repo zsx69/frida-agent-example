@@ -4,7 +4,7 @@ Java.perform(
         Base64.encodeToString.overload('[B', 'int').implementation = function (v1, v2) {
             console.log("v1:" + bytesToString(v1));
             console.log("v2:" + v2);
-            var encry =  this.encodeToString(v1, v2);
+            var encry = this.encodeToString(v1, v2);
             console.log("encry:" + encry);
             return encry
         };

@@ -21,7 +21,8 @@ Lianjia-Version	2.33.0
 Host	app.api.ke.com
 """
 
-def get_secret(res:str):
+
+def get_secret(res: str):
     import hashlib
     """
     使用sha1加密算法，返回str加密后的字符串
@@ -31,8 +32,10 @@ def get_secret(res:str):
     print(encrypts)
     return encrypts
 
+
 def get_uuid():
     return uuid.uuid1().__str__()
+
 
 time_stamp = int(time.time())
 url = f"https://app.api.ke.com/Rentplat/v1/rented/list?city_id=110000&condition=shahe2%2F&offset=0&limit=30&request_ts={time_stamp}"
@@ -49,17 +52,13 @@ bytes_url = parm.encode("utf-8")
 str_url = base64.b64encode(bytes_url)  # 被编码的参数必须是二进制数据
 header_parm["x-req-id"] = uuid.uuid1().__str__()
 header_parm["Authorization"] = str_url.decode()
-header_parm['extension'] = 'lj_duid=DuPWK84bMsl6rN0fAuEkr4uLN9zl0SCUyEhh5Uod8HDda+FANN0Eok/7Fy9Z9OA/R98uv7w9zQMNC7AcMPtZxKbA&lj_android_id=585c3437650f9ffa&lj_imei=352530082383944&lj_device_id_android=585c3437650f9ffa&mac_id=AC:37:43:A9:0B:B9'
-header_parm['Cookie'] = f'lianjia_udid=585c3437650f9ffa;lianjia_ssid={get_uuid()};lianjia_uuid={get_uuid()}'
-res = requests.get(url, headers = header_parm)
+header_parm[
+    'extension'] = 'lj_duid=DuPWK84bMsl6rN0fAuEkr4uLN9zl0SCUyEhh5Uod8HDda+FANN0Eok/7Fy9Z9OA/R98uv7w9zQMNC7AcMPtZxKbA&lj_android_id=585c3437650f9ffa&lj_imei=352530082383944&lj_device_id_android=585c3437650f9ffa&mac_id=AC:37:43:A9:0B:B9'
+header_parm[
+    'Cookie'] = f'lianjia_udid=585c3437650f9ffa;lianjia_ssid={get_uuid()};lianjia_uuid={get_uuid()}'
+res = requests.get(url, headers=header_parm)
 # print(header_parm)
 s = res.json()["data"]["list"]
 # print(res.text)
 # print(len(s))
 print(s)
-
-
-
-
-
-
