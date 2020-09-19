@@ -4,7 +4,14 @@ function hook_java() {
             var result = this.myfirstjniJNI('from hook java function');
             console.log('result', x, result);
             return result;
-        }
+        };
+        Java.choose('com.example.demoso1.MainActivity', {
+            onMatch: function (instance) {
+                instance.init();
+            },
+            onComplete() {
+            }
+        })
     })
 }
 
@@ -43,13 +50,68 @@ function hook_native() {
 }
 
 function hook_art() {
+    // hook GetStringUTFChars、NewStringUTF等
+    // 寻找libart.so在不在
+    var modules = JSON.stringify(Process.enumerateModules());
+    // 因为name mangling的原因我们无法找到它的符号，拿到模块枚举所有的符号，然后过滤。
+    var Symbols = Process.findModuleByName("libart.so").enumerateSymbols();
+    // console.log(JSON.stringify(Symbols));
+    var GetString_ADD;
+    for (var i = 0; i < Symbols.length; i++) {
+        var symbol = Symbols[i].name;
+        if ((symbol.indexOf('CheckJNI') == -1) && symbol.indexOf('JNI') >= 0) {
+            if (symbol.indexOf('GetStringUTFChars') >= 0) {
+                // 打印符号名 // _ZN3art3JNI17GetStringUTFCharsEP7_JNIEnvP8_jstringPh 和ida显示的一样
+                console.log("Symbols[i].name:", Symbols[i].name);
+                // 打印符号地址
+                console.log("Symbols[i].address:", Symbols[i].address);
+                GetString_ADD = Symbols[i].address;
+            }
+        }
+    }
+    console.log("GetString Address:", GetString_ADD);
+    Interceptor.attach(GetString_ADD, {
+        onEnter: function (args) {
+            // 崩掉 待。。。
+            // var content = Java.vm.getEnv().getStringUtfChars(args[0], null).readCString();
+            //console.log("content", content);
+            // console.log("args[0]",hexdump(args[0].readPointer())); 打印的是编码
+        },
+        onLeave: function (retval) {
+            console.log("retval", ptr(retval).readCString())
+        }
+    })
+}
 
+function hook_libc() {
+    // 函数名就是原有的，不会混淆
+    var Symbols = Process.findModuleByName("libc.so").enumerateSymbols();
+    var pthread = null;
+    for (var i = 0; i < Symbols.length; i++) {
+        var symbol = Symbols[i].name;
+        if (symbol.indexOf('pthread_create') >= 0) {
+            //console.log("Symbols[i].name:", Symbols[i].name);
+            //console.log("Symbols[i].address:", Symbols[i].address);
+            pthread = Symbols[i].address;
+        }
+    }
+    // hook pthread 需要主动调用hook_java()，主动调用init(), 才能找到pthread
+    console.log("pthread_address",pthread);
+    Interceptor.attach(pthread, {
+        onEnter: function(args) {
+            console.log("pthread args", args[0], args[1], args[2], args[3])
+        },
+        onLeave: function(retval) {
+            console.log("ret", retval)
+        }
+    });
 }
 
 function main() {
     hook_java();
     hook_native();
     hook_art();
+    hook_libc()
 }
 
 setImmediate(main);
