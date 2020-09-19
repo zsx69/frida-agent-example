@@ -1,10 +1,10 @@
 function hook_java() {
     Java.perform(function x() {
-        Java.use('com.example.demoso1.MainActivity').myfirstjniJNI.implementation = function (x) {
-            var result = this.myfirstjniJNI('from hook java function');
-            console.log('result', x, result);
-            return result;
-        };
+        // Java.use('com.example.demoso1.MainActivity').myfirstjniJNI.implementation = function (x) {
+        //     var result = this.myfirstjniJNI('from hook java function');
+        //     console.log('result', x, result);
+        //     return result;
+        // };
         Java.choose('com.example.demoso1.MainActivity', {
             onMatch: function (instance) {
                 instance.init();
@@ -39,6 +39,7 @@ function hook_native() {
             console.log("content", content)
         },
         onLeave: function (retval) {
+            // 只能在native中使用
             console.log("retval", Java.vm.getEnv().getStringUtfChars(retval, null).readCString());
             // 新建返回值
             var new_retval = Java.vm.getEnv().newStringUtf("new retval from hook");
