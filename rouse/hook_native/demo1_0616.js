@@ -73,13 +73,13 @@ function hook_art() {
     console.log("GetString Address:", GetString_ADD);
     Interceptor.attach(GetString_ADD, {
         onEnter: function (args) {
-            // 崩掉 待。。。
-            // var content = Java.vm.getEnv().getStringUtfChars(args[0], null).readCString();
-            //console.log("content", content);
+            var content = Java.vm.getEnv().getStringUtfChars(args[1], null).readCString();
+            console.log("content", content);
             // console.log("args[0]",hexdump(args[0].readPointer())); 打印的是编码
         },
         onLeave: function (retval) {
             console.log("retval", ptr(retval).readCString())
+            // console.log("retval", Memory.readCString(retval))
         }
     })
 }
