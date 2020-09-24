@@ -48,10 +48,30 @@ function hook_replace() {
         return retval;
     }, 'pointer', ['pointer', 'pointer']));
 }
+// inline_hook hook任意地址
+function inline_hook(){
+    var libnative_addr = Module.findBaseAddress('libnative-lib.so');
+    var addr_0x102BC = null;
+    if(libnative_addr){
+        console.log("libnative_addr", libnative_addr);
+        addr_0x102BC = libnative_addr.add(0x102BC);
+        console.log("addr_0x102BC", addr_0x102BC)
+    }
 
+    Interceptor.attach(addr_0x102BC,{
+        onEnter:function (args) {
+            // x 64位 寄存地址
+            console.log("context",this.context.PC, this.context.x1)
+        },
+        onLeave:function (retval) {
+            console.log("retval:", retval)
+        }
+    })
+}
 
 function main() {
-    hook_replace()
+    // hook_replace()
+    inline_hook();
 }
 
 setImmediate(main)
