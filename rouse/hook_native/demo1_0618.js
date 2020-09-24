@@ -48,6 +48,8 @@ function hook_replace() {
         return retval;
     }, 'pointer', ['pointer', 'pointer']));
 }
+
+
 // inline_hook hook任意地址
 function inline_hook(){
     var libnative_addr = Module.findBaseAddress('libnative-lib.so');
@@ -70,7 +72,7 @@ function inline_hook(){
 }
 
 function main() {
-    // hook_replace()
+    hook_replace()
     inline_hook();
 }
 
