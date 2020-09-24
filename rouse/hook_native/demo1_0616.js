@@ -62,6 +62,7 @@ function hook_art() {
         var symbol = Symbols[i].name;
         if ((symbol.indexOf('CheckJNI') == -1) && symbol.indexOf('JNI') >= 0) {
             if (symbol.indexOf('GetStringUTFChars') >= 0) {
+                // 搜索的哪个库，就在哪个库找
                 // 打印符号名 // _ZN3art3JNI17GetStringUTFCharsEP7_JNIEnvP8_jstringPh 和ida显示的一样
                 console.log("Symbols[i].name:", Symbols[i].name);
                 // 打印符号地址
