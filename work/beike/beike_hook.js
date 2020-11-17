@@ -1,7 +1,6 @@
 function hook_encode() {
     Java.perform(function x() {
-            console.log("java perform");
-            // login
+        console.log("java perform");
         var Base64 = Java.use("android.util.Base64");
         Base64.encodeToString.overload('[B', 'int').implementation = function (v1, v2) {
             console.log("v1:" + bytesToString(v1));
