@@ -1,3 +1,8 @@
+/*
+okhttp3 拦截器
+首先使用objection搜索app是否使用Okhttp类, 在启动frida -UF -l hookOkhttp3.js命令。
+*/
+
 function hook_okhttp3(classLoader) {
     console.log("START");
     Java.perform(function () {
