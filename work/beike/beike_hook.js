@@ -1,5 +1,21 @@
 function hook_encode() {
     Java.perform(function x() {
+
+        Java.enumerateClassLoaders({
+            onMatch:function(loader){
+                try{
+                    if(loader.findClass("android.util.Base64")){
+                        console.log("Successfully found loader")
+                        console.log(loader);
+                        // 切换新的loder
+                        Java.classFactory.loader = loader ;
+                    }
+                }catch(error){
+                    console.log("find error:"+error)
+                }
+            },onComplete:function(){}
+        })
+
         console.log("java perform");
         var Base64 = Java.use("android.util.Base64");
         Base64.encodeToString.overload('[B', 'int').implementation = function (v1, v2) {
