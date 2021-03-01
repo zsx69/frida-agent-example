@@ -6,8 +6,10 @@ import time
 import frida
 
 device = frida.get_usb_device()
+
+# 生成一个进程id
 pid = device.spawn(['com.iCitySuzhou.suzhou001'])
-# 重启设备
+# 重启进程
 device.resume(pid)
 time.sleep(2)
 session = device.attach(pid)

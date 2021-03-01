@@ -12,7 +12,7 @@ rpc.exports = {
     return 'Hello';
   },
   failPlease: function () {
-    oops;
+    return 'oops';
   }
 };
 """)
