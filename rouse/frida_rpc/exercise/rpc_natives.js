@@ -1,3 +1,6 @@
+// frida_server/https 使用nps 暴露到公网
+// frida_server tcp协议 连接只有一个，https 是http协议 tcp协议更快,尽量暴露手机frida_server
+
 var ENV = null;
 var JCLZ = null;
 
@@ -9,6 +12,7 @@ var addrNewStringUTF = null;
 
 var NewStringUTF = null;
 
+// 放在/data/local/tmp 会报错 所以放在/data/app/下。
 var modulelibnative =  Module.load("/data/app/libnative-lib.so")
 
 method01addr = modulelibnative.findExportByName("_Z8method01P7_JNIEnvP7_jclassP8_jstring")
