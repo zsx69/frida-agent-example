@@ -1,3 +1,5 @@
+// 内存中是真的其余是假的
+
 // 获取类名
 function getObjClassName(obj) {
     if (!jclazz) {
@@ -67,9 +69,10 @@ function hookdecodeimgkey() {
 
 function hookImage() {
     Java.perform(function () {
-
+        // 多线程版本
         var Runnable = Java.use("java.lang.Runnable");
         var saveImg = Java.registerClass({
+            // 随便写， app多了此类
             name: "com.roysue.runnable",
             implements: [Runnable],
             fields: {
@@ -80,11 +83,11 @@ function hookImage() {
                     returnType: "void",
                     argumentTypes: ["android.graphics.Bitmap"],
                     implementation: function (bitmap) {
+                        // 把域给bitmap
                         this.bm.value = bitmap;
                     }
                 }],
                 run: function () {
-
                     var path = "/sdcard/Download/tmp/" + guid() + ".jpg"
                     console.log("path=> ", path)
                     var file = Java.use("java.io.File").$new(path)
@@ -141,7 +144,7 @@ function hookImage() {
             var fos = Java.use("java.io.FileOutputStream").$new(file);
 
             // 结果就是一个Bitmap对象不是一个类 可以直接使用compress保存
-            // java文档 Bitmap.CompressFormat 转成js中内部类
+            // java文档 Bitmap.CompressFormat 转成 frida 中内部类
             result.compress(Java.use("android.graphics.Bitmap$CompressFormat").JPEG.value, 100, fos)
             console.log("success!")
             fos.flush();
