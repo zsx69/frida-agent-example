@@ -17,6 +17,7 @@ function guid() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
+
 function hookImageByteCiphered() {
     Java.perform(function () {
         Java.use("android.util.Base64").encodeToString.overload('[B', 'int').implementation = function (bytearray, int) {
@@ -27,6 +28,40 @@ function hookImageByteCiphered() {
             return result;
         }
     })
+}
+
+function hookByteBuffer() {
+    Java.perform(function () {
+        Java.use("com.ilulutv.fulao2.other.i.b").a.overload('java.nio.ByteBuffer').implementation = function (bf) {
+            var result = this.a(bf)
+            // 结果和hookImageByteCiphered参数是一样的，此时是秘文数据
+            //var gson = Java.use('com.google.gson.Gson')
+            //console.log("result is => ",result);
+            send(result)
+            //console.log( gson.$new().toJson(result))
+            return result;
+        }
+    })
+}
+
+function hookdecodeimgkey() {
+    Java.perform(function () {
+        // 使用js的比较困难 使用系统库的base64
+        var base64 = Java.use("android.util.Base64")
+        // 数据为加密的此方法为aes解密
+        Java.use("com.ilulutv.fulao2.other.i.b").b.overload('[B', '[B', 'java.lang.String').implementation = function (key, iv, image) {
+            var result = this.b(key, iv, image);
+            // 获取aes的key和iv
+            // 打印数组麻烦。使用base64加密 在python中解密使用
+            console.log("key", base64.encodeToString(key, 0));
+            console.log("iv", base64.encodeToString(iv, 0));
+            return result;
+        }
+    })
+    /*
+    key svOEKGb5WD0ezmHE4FXCVQ==
+    iv 4B7eYzHTevzHvgVZfWVNIg==
+    */
 }
 
 
@@ -105,7 +140,7 @@ function hookImage() {
             var file = Java.use("java.io.File").$new(path)
             var fos = Java.use("java.io.FileOutputStream").$new(file);
 
-
+            // 结果就是一个Bitmap 可以直接使用compress保存
             result.compress(Java.use("android.graphics.Bitmap$CompressFormat").JPEG.value, 100, fos)
             console.log("success!")
             fos.flush();
@@ -121,36 +156,7 @@ function hookImage() {
     })
 }
 
-function hookByteBuffer() {
-    Java.perform(function () {
-        Java.use("com.ilulutv.fulao2.other.i.b").a.overload('java.nio.ByteBuffer').implementation = function (bf) {
-            var result = this.a(bf)
-            //var gson = Java.use('com.google.gson.Gson')
-            //console.log("result is => ",result);
-            send(result)
-            //console.log( gson.$new().toJson(result))
-            return result;
-        }
-    })
-}
 
-function hookdecodeimgkey() {
-    Java.perform(function () {
-        var base64 = Java.use("android.util.Base64")
-        // 数据为加密的此方法为aes解密
-        Java.use("com.ilulutv.fulao2.other.i.b").b.overload('[B', '[B', 'java.lang.String').implementation = function (key, iv, image) {
-            var result = this.b(key, iv, image);
-            // 打印麻烦。使用base64加密 在python中解密使用
-            console.log("key", base64.encodeToString(key, 0));
-            console.log("iv", base64.encodeToString(iv, 0));
-            return result;
-        }
-    })
-    /*
-    key svOEKGb5WD0ezmHE4FXCVQ==
-    iv 4B7eYzHTevzHvgVZfWVNIg==
-    */
-}
 
 function main() {
     //hookq0();
