@@ -140,7 +140,8 @@ function hookImage() {
             var file = Java.use("java.io.File").$new(path)
             var fos = Java.use("java.io.FileOutputStream").$new(file);
 
-            // 结果就是一个Bitmap 可以直接使用compress保存
+            // 结果就是一个Bitmap对象不是一个类 可以直接使用compress保存
+            // java文档 Bitmap.CompressFormat 转成js中内部类
             result.compress(Java.use("android.graphics.Bitmap$CompressFormat").JPEG.value, 100, fos)
             console.log("success!")
             fos.flush();
