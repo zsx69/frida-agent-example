@@ -35,6 +35,7 @@ function hook_replace() {
     // jstring 是一个pointer， GetStringUTF第一个参数是JNI ENV
     var NewStringUTF = new NativeFunction(addr_NewStringUTF, 'pointer', ['pointer', 'pointer']);
     Interceptor.replace(NewStringUTF, new NativeCallback(function (env, content_ptr) {
+        // char * 使用Memory.readCString读取结果
         var content = Memory.readCString(content_ptr);
         console.log('Opening "' + content + '"');
 
