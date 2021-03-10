@@ -70,8 +70,8 @@ function hookImage() {
             var ByteString = Java.use("com.android.okhttp.okio.ByteString");
 
             //var gson = Java.use('com.google.gson.Gson')
-
-
+            // data 由 com.ilulutv.fulao2.other.i.b 解密得来的
+            // data 为数据的明文，就是最终图片，可以看jpg文件头看是否为一个图片
             //send(data)
 
 
@@ -80,6 +80,7 @@ function hookImage() {
             //console.log("IMAGE DATA:bytearray,int=>",ByteString.of(data).hex())
 
             /*
+            写入sd卡中
             var path = "/sdcard/Download/tmp/"+guid()+".jpg"
             console.log("path=> ",path)
             var file = Java.use("java.io.File").$new(path)
@@ -136,6 +137,7 @@ function hookByteBuffer() {
 function hookdecodeimgkey() {
     Java.perform(function () {
         var base64 = Java.use("android.util.Base64")
+        // 数据为加密的此方法为aes解密
         Java.use("com.ilulutv.fulao2.other.i.b").b.overload('[B', '[B', 'java.lang.String').implementation = function (key, iv, image) {
             var result = this.b(key, iv, image);
             // 打印麻烦。使用base64加密 在python中解密使用
@@ -160,76 +162,3 @@ function main() {
 }
 setImmediate(main)
 
-
-
-function hook_Address() {
-    Java.perform(function () {
-        Java.use("java.net.InetSocketAddress").$init.overload('java.net.InetAddress', 'int').implementation = function (addr, int) {
-            var result = this.$init(addr, int)
-            if (addr.isSiteLocalAddress()) {
-                console.log("Local address => ", addr.toString(), " port is => ", int)
-            } else {
-                console.log("Server address => ", addr.toString(), " port is => ", int)
-            }
-
-            return result;
-        }
-
-    })
-}
-
-function hook_socket() {
-    Java.perform(function () {
-        console.log("hook_socket;")
-
-        Java.use("java.net.SocketOutputStream").write.overload('[B', 'int', 'int').implementation = function (bytearry, int1, int2) {
-            var result = this.write(bytearry, int1, int2);
-            console.log("HTTP write result,bytearry,int1,int2=>", result, bytearry, int1, int2)
-            var ByteString = Java.use("com.android.okhttp.okio.ByteString");
-            //console.log("bytearray contents=>", ByteString.of(bytearry).hex())
-            //console.log(jhexdump(bytearry,int1,int2));
-            console.log(jhexdump(bytearry));
-            return result;
-        }
-
-        Java.use("java.net.SocketInputStream").read.overload('[B', 'int', 'int').implementation = function (bytearry, int1, int2) {
-            var result = this.read(bytearry, int1, int2);
-            console.log("HTTP read result,bytearry,int1,int2=>", result, bytearry, int1, int2)
-            var ByteString = Java.use("com.android.okhttp.okio.ByteString");
-            //console.log("bytearray contents=>", ByteString.of(bytearry).hex())
-            //console.log(jhexdump(bytearry,int1,int2));
-            console.log(jhexdump(bytearry));
-            return result;
-        }
-
-    })
-}
-
-
-function hook_SSLsocketandroid8() {
-    Java.perform(function () {
-        console.log("hook_SSLsocket")
-
-        Java.use("com.android.org.conscrypt.ConscryptFileDescriptorSocket$SSLOutputStream").write.overload('[B', 'int', 'int').implementation = function (bytearry, int1, int2) {
-            var result = this.write(bytearry, int1, int2);
-            console.log("HTTPS write result,bytearry,int1,int2=>", result, bytearry, int1, int2)
-            var ByteString = Java.use("com.android.okhttp.okio.ByteString");
-            console.log("HTTPS bytearray contents=>", ByteString.of(bytearry).hex())
-            //console.log(jhexdump(bytearry,int1,int2));
-            console.log(jhexdump(bytearry));
-            return result;
-        }
-
-        Java.use("com.android.org.conscrypt.ConscryptFileDescriptorSocket$SSLInputStream").read.overload('[B', 'int', 'int').implementation = function (bytearry, int1, int2) {
-            var result = this.read(bytearry, int1, int2);
-            console.log("HTTPS read result,bytearry,int1,int2=>", result, bytearry, int1, int2)
-            var ByteString = Java.use("com.android.okhttp.okio.ByteString");
-            console.log("HTTPS bytearray contents=>", ByteString.of(bytearry).hex())
-            //console.log(jhexdump(bytearry,int1,int2));
-            //console.log(jhexdump(bytearry));
-            return result;
-        }
-
-
-    })
-}
