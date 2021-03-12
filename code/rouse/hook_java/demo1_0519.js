@@ -94,7 +94,7 @@ function challenge5() {
                         console.log("Successfully found loader");
                         console.log(loader);
                         // 切换新的loader 安卓7.0
-                        // Java.classFactory.loader = loader;
+                        Java.classFactory.loader = loader;
                     }
                 } catch (e) {
                     console.log("find error" + e)
@@ -131,4 +131,4 @@ function challenge6() {
 }
 
 
-setImmediate(challenge6);
+setImmediate(challenge5);
