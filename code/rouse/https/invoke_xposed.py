@@ -2,11 +2,10 @@ import requests
 import json
 
 
-def encrypt(enParam):
+def encrypt(data):
     url = "http://192.168.2.6:8889"
-    param = enParam
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    r = json.loads(requests.post(url=url, data=param, headers=headers).text)
+    r = json.loads(requests.post(url=url, data=data, headers=headers).text)
     print(json.dumps(r, ensure_ascii=False, indent=5))
 
 
