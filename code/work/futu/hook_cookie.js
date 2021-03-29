@@ -19,7 +19,7 @@ ret_value:yVfs2CXD%2BIvTCyHpitsc7s8ZzMMBqOvU9oBM7YTRkyQR3a%2B%2BjNZlM1KH5fLv5EJj
 */
 function hook_web_sig() {
     Java.perform(function x() {
-        var as = Java.use("cn.futu.component.util.as")
+        var as = Java.use("cn.futu.component.util.as");
         as.e.overload('java.lang.String').implementation = function (v1) {
             // console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Throwable").$new()));
             console.log("v1:" + v1);
@@ -46,8 +46,6 @@ function hook_web_sig_a() {
         }
     );
 }
-
-
 
 
 // mo19415b
