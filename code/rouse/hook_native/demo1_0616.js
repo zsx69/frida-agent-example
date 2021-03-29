@@ -76,7 +76,8 @@ function hook_art() {
         onEnter: function (args) {
             var content = Java.vm.getEnv().getStringUtfChars(args[1], null).readCString();
             console.log("content", content);
-            // console.log("args[0]",hexdump(args[0].readPointer())); 打印的是编码// 比如电话通信就是hex
+             // 打印的是编码, 比如电话通信就是hex,可以使用hexdump打印 和wireshark抓到的一样
+            // console.log("args[0]",hexdump(args[0].readPointer()));
         },
         onLeave: function (retval) {
             console.log("retval", ptr(retval).readCString())
