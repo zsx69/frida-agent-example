@@ -7,7 +7,7 @@ pid = device.spawn('com.example.demoso1')
 device.resume(pid)
 time.sleep(1)
 session = device.attach(pid)
-with open("demo1_1023_rpc.js") as f:
+with open("1023_rpc.js") as f:
     script = session.create_script(f.read())
 script.load()
 

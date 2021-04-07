@@ -18,7 +18,7 @@ pid = device.spawn(['com.noguess.a0820demo1'])
 device.resume(pid)
 time.sleep(2)
 session = device.attach(pid)
-with open("demo2_0820rpc.js") as f:
+with open("0820_rpc.js") as f:
     script = session.create_script(f.read())
 script.on('message', on_message)
 script.load()
