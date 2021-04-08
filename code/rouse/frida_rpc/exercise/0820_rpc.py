@@ -29,4 +29,4 @@ while 1 == 1:
     if command == "1":
         break
     elif command == "2":
-        script.exports.callsecret()
+        script.exports.callsecretfunction()
