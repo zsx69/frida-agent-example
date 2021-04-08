@@ -21,7 +21,7 @@ pid = device.spawn(["com.r0ysue.a0526printout"])
 device.resume(pid)
 time.sleep(1)
 session = device.attach(pid)
-with open("demo1_0526.js") as f:
+with open("0526.js") as f:
     script = session.create_script(f.read())
 script.on("message", my_message_handler)  # 注册消息处理函数
 script.load()
