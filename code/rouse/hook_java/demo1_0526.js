@@ -95,10 +95,12 @@ function interface88() {
 
             }
         });
+        //  beer.$new() 您可以通过调用$new()它来调用构造函数以实例化对象
         console.log('beer.bubble:' + beer.$new().flow())
     })
 }
 
+// 使用Java.choose找出实例，就可以使用Java enum类的方法了
 function enum8888() {
     Java.perform(function () {
         Java.choose('com.r0ysue.a0526printout.Signal', {
