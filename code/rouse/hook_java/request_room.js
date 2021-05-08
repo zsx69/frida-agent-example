@@ -6,12 +6,12 @@ function inspectObject(obj) {
         const methods = obj_class.getMethods();
         console.log("Inspecting " + obj.getClass().toString());
         console.log("\tFields:");
-        for (var i in fields){
-           // console.log("\t\t" + fields[i].toString());
-           var className = obj_class.toString().trim().split(" ")[1] ;
-           // console.log("className is => ",className);
-           var fieldName = fields[i].toString().split(className.concat(".")).pop() ; 
-           console.log(fieldName + " => ",obj[fieldName].value);
+        for (var i in fields) {
+            // console.log("\t\t" + fields[i].toString());
+            var className = obj_class.toString().trim().split(" ")[1];
+            // console.log("className is => ",className);
+            var fieldName = fields[i].toString().split(className.concat(".")).pop();
+            console.log(fieldName + " => ", obj[fieldName].value);
         }
         // console.log("\tMethods:");
         // for (var i in methods)
@@ -35,19 +35,24 @@ function hookROOMinfo() {
             inspectObject(roomDetail);
             return this.onSuccess(resp);
         }
+
+        Java.use("com.fanwe.live.LiveInformation").getRoomId.implementation = function () {
+            console.log("calling com.fanwe.live.activity.room.LiveActivity.getRoomId ...")
+            return 1379212;
+        }
     })
 
 }
 
 
-function invoke(){
+function invoke() {
 
-    Java.perform(function(){
-        Java.choose("com.fanwe.live.business.LiveBusiness",{
-            onMatch:function(ins){
-                console.log("found ins => ",ins)
+    Java.perform(function () {
+        Java.choose("com.fanwe.live.business.LiveBusiness", {
+            onMatch: function (ins) {
+                console.log("found ins => ", ins)
                 // ins.requestData();
-            },onComplete:function(){
+            }, onComplete: function () {
                 console.log("Search completed!")
             }
         })
@@ -55,8 +60,8 @@ function invoke(){
 }
 
 
-function invoke2(){
-    Java.perform(function(){
+function invoke2() {
+    Java.perform(function () {
 
         // com.fanwe.live.business.LiveBusiness(ILiveActivity);
         var ILiveActivity = Java.use("com.fanwe.live.activity.room.ILiveActivity");
@@ -65,29 +70,40 @@ function invoke2(){
             name: 'com.fanwe.live.activity.room.ILiveActivityImpl',
             implements: [ILiveActivity],
             methods: {
-                openSendMsg(){},
-                getCreaterId(){},
-                getGroupId(){},
-                getRoomId(){},
-                getRoomInfo(){},
-                getSdkType(){},
-                isAuctioning(){},
-                isCreater(){},
-                isPlayback(){},
-                isPrivate(){}
+                openSendMsg() {
+                },
+                getCreaterId() {
+                },
+                getGroupId() {
+                },
+                getRoomId() {
+                },
+                getRoomInfo() {
+                },
+                getSdkType() {
+                },
+                isAuctioning() {
+                },
+                isCreater() {
+                },
+                isPlayback() {
+                },
+                isPrivate() {
+                }
             }
-          });
+        });
 
         var result = Java.use("com.fanwe.live.business.LiveBusiness").$new(ILiveActivityImpl.$new());
-        console.log("result is => ",result.requestRoomInfo("123454"))
+        console.log("result is => ", result.requestRoomInfo("123454"))
     })
 }
 
-var LiveBusiness = null ;
+var LiveBusiness = null;
 console.log("LiveBusiness is => ", LiveBusiness)
-function hook3(){
-    Java.perform(function(){
-        Java.use("com.fanwe.live.business.LiveBusiness").getLiveQualityData.implementation = function(){
+
+function hook3() {
+    Java.perform(function () {
+        Java.use("com.fanwe.live.business.LiveBusiness").getLiveQualityData.implementation = function () {
             LiveBusiness = this;
             console.log("now LiveBusiness is => ", LiveBusiness)
             LiveBusiness.requestRoomInfo("12343");
@@ -97,15 +113,15 @@ function hook3(){
     })
 }
 
-function invoke3(){
-    Java.perform(function(){
+function invoke3() {
+    Java.perform(function () {
         var result = LiveBusiness.requestRoomInfo("12343");
-        console.log("result is => ",result)
+        console.log("result is => ", result)
     })
 }
 
-function invoke4(){
-    Java.perform(function(){
+function invoke4() {
+    Java.perform(function () {
 
         // com.fanwe.live.business.LiveBusiness(ILiveActivity);
         var ILiveActivity = Java.use("com.fanwe.live.activity.room.ILiveActivity");
@@ -114,24 +130,34 @@ function invoke4(){
             name: 'com.fanwe.live.activity.room.ILiveActivityImpl',
             implements: [ILiveActivity],
             methods: {
-                openSendMsg(){},
-                getCreaterId(){},
-                getGroupId(){},
-                getRoomId(){},
-                getRoomInfo(){},
-                getSdkType(){},
-                isAuctioning(){},
-                isCreater(){},
-                isPlayback(){},
-                isPrivate(){}
+                openSendMsg() {
+                },
+                getCreaterId() {
+                },
+                getGroupId() {
+                },
+                getRoomId() {
+                },
+                getRoomInfo() {
+                },
+                getSdkType() {
+                },
+                isAuctioning() {
+                },
+                isCreater() {
+                },
+                isPlayback() {
+                },
+                isPrivate() {
+                }
             }
-          });
+        });
 
         var LB = Java.use("com.fanwe.live.business.LiveBusiness").$new(ILiveActivityImpl.$new());
 
         var LB2 = Java.use("com.fanwe.live.business.LiveBusiness$2");
         var AppRequestCallback = Java.use('com.fanwe.hybrid.http.AppRequestCallback');
-        Java.use("com.fanwe.live.common.CommonInterface").requestRoomInfo(1377894,123,"1234",Java.cast(LB2.$new(LB),AppRequestCallback));
+        Java.use("com.fanwe.live.common.CommonInterface").requestRoomInfo(1377894, 123, "1234", Java.cast(LB2.$new(LB), AppRequestCallback));
     })
 }
 
