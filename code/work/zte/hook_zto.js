@@ -32,6 +32,24 @@ function e() {
 }
 
 
+function g() {
+    Java.perform(function () {
+        console.log("hook starting....")
+        var String = Java.use('java.lang.String')
+        var nameClass = Java.use("zte.com.market.service.b.a.a")
+        nameClass.a.overload('[B').implementation = function (v1) {
+            console.log("v1->", v1)
+            console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Throwable").$new()));
+            // 如果能转成字符串就是解密后的明文，也就是decode
+            // 返回的是明文 此时已经被解密
+            var result = this.a(v1);
+            console.log("result:->", result)
+            return result
+        }
+    })
+}
+
+
 function bytesToString(arr) {
     var str = '';
     arr = new Uint8Array(arr);
