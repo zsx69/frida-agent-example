@@ -50,6 +50,34 @@ function g() {
 }
 
 
+function h() {
+    Java.perform(function () {
+        console.log("hook starting....")
+        var nameClass = Java.use("zte.com.market.service.b.a.d")
+        nameClass.a.overload('[B', '[B').implementation = function (v1, v2) {
+            console.log("v1->", bytesToString(v1))
+            console.log("v2->", bytesToString(v2))
+            var result = this.a(v1, v2);
+            console.log("result:->", bytesToString(result))
+            return result
+        }
+    })
+}
+
+function i() {
+    Java.perform(function () {
+        console.log("hook starting....")
+        var nameClass = Java.use("zte.com.market.service.b.a.e")
+        nameClass.c.overload('[B').implementation = function (v1) {
+            console.log("v1->", bytesToString(v1))
+            var result = this.c(v1);
+            console.log("result:->", bytesToString(result))
+            return result
+        }
+    })
+}
+
+
 function bytesToString(arr) {
     var str = '';
     arr = new Uint8Array(arr);
@@ -62,7 +90,7 @@ function bytesToString(arr) {
 
 
 function main(){
-    e()
+    i()
 }
 
 setImmediate(main)
