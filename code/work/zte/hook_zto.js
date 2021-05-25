@@ -1,3 +1,4 @@
+// version 10.06.2004
 function f() {
     Java.perform(function () {
         console.log("hook starting....")
