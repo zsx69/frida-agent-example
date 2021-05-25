@@ -116,7 +116,7 @@ function main() {
     // hook_cgi_response_a()
     // hook_network_agf()
     // hook_network_aga()
-    hook_network_ab()
+    // hook_network_ab()
 }
 
 setImmediate(main)
