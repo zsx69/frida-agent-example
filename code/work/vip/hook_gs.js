@@ -1,3 +1,4 @@
+// version 7.42.7
 function hook_gs() {
     Java.perform(function x() {
             console.log("java perform");

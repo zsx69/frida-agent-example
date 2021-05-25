@@ -1,3 +1,4 @@
+// 8.9.9 and 8.0.0.15
 function hook_decrypt() {
     Java.perform(function x() {
             console.log("java perform");
