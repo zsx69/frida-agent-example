@@ -70,6 +70,40 @@ function hook_D90() {
 }
 
 
+var destAddr = '';  //定位xsp地址
+
+function hook_x9_v2() {
+    var so_addr = Module.findBaseAddress("libnative-lib.so");
+    if (so_addr) {
+        console.log("so_addr:", so_addr);
+
+        var addr_b90 = so_addr.add(0xB90);
+        var sub_b90 = new NativeFunction(addr_b90, 'int', ['pointer', 'int', 'pointer']);
+        Interceptor.attach(sub_b90, {
+            onEnter: function (args) {
+                destAddr = args[0];
+                console.log('onEnter B90');
+            },
+            //在hook函数之后执行的语句
+            onLeave: function (retval) {
+                console.log('onLeave B90');
+            }
+        });
+
+
+        var addr_b2c = so_addr.add(0xb2c);
+        console.log("The addr_b2c:", addr_b2c);
+        Java.perform(function () {
+            Interceptor.attach(addr_b2c, {
+                onEnter: function (args) {
+                    console.log("addr_b2c OnEnter :", Memory.readByteArray(destAddr.sub(0x38), 64));
+                }
+            })
+        })
+    }
+}
+
+
 function hook_x9() {
     // hook寄存器地址，得到对比的正确的base64
     var libnative_addr = Module.findBaseAddress('libnative-lib.so');
@@ -117,4 +151,4 @@ function hook_D5C() {
 }
 
 
-setImmediate(hook_D90)
+setImmediate(inline_hook)
