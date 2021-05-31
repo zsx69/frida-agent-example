@@ -124,13 +124,13 @@ function hook_x9() {
 }
 
 
-function hook_D5C() {
+function hook_D58() {
     Java.perform(function () {
         var libnative = Module.findBaseAddress("libnative-lib.so");
         console.log("libnative: " + libnative);
         // 获取异或的字节，开了会报错，但是可以获取
         var ishook = true;
-        var EOR = libnative.add(0xD5C);
+        var EOR = libnative.add(0xD58);
         var eor = [];
         var eorlen = 0;
         send("EOR: " + EOR);
@@ -151,4 +151,4 @@ function hook_D5C() {
 }
 
 
-setImmediate(inline_hook)
+setImmediate(hook_D58)
