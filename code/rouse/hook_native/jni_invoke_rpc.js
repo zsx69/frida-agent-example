@@ -13,31 +13,31 @@ var addrNewStringUTF = null;
 var NewStringUTF = null;
 
 // 放在/data/local/tmp 会报错 所以放在/data/app/下。
-var modulelibnative =  Module.load("/data/app/libnative-lib.so")
+var modulelibnative = Module.load("/data/app/libnative-lib.so")
 
 method01addr = modulelibnative.findExportByName("_Z8method01P7_JNIEnvP7_jclassP8_jstring")
 method02addr = modulelibnative.findExportByName("_Z8method02P7_JNIEnvP8_jobjectP8_jstring")
-method02 = new NativeFunction(method02addr,'pointer',['pointer','pointer','pointer']);
+method02 = new NativeFunction(method02addr, 'pointer', ['pointer', 'pointer', 'pointer']);
 
 function rpc_natives() {
     var symbols = Module.enumerateSymbolsSync("libart.so");
     var addrRegisterNatives = null;
     for (var i = 0; i < symbols.length; i++) {
         var symbol = symbols[i];
-        
+
         //_ZN3art3JNI15RegisterNativesEP7_JNIEnvP7_jclassPK15JNINativeMethodi
         if (symbol.name.indexOf("art") >= 0 &&
-                symbol.name.indexOf("JNI") >= 0 && 
-                symbol.name.indexOf("NewStringUTF") >= 0 && 
-                symbol.name.indexOf("CheckJNI") < 0) {
+            symbol.name.indexOf("JNI") >= 0 &&
+            symbol.name.indexOf("NewStringUTF") >= 0 &&
+            symbol.name.indexOf("CheckJNI") < 0) {
             addrNewStringUTF = symbol.address;
             console.log("NewStringUTF is at ", symbol.address, symbol.name);
-            NewStringUTF = new NativeFunction(addrNewStringUTF,'pointer',['pointer','pointer'])
+            NewStringUTF = new NativeFunction(addrNewStringUTF, 'pointer', ['pointer', 'pointer'])
         }
         if (symbol.name.indexOf("art") >= 0 &&
-                symbol.name.indexOf("JNI") >= 0 && 
-                symbol.name.indexOf("RegisterNatives") >= 0 && 
-                symbol.name.indexOf("CheckJNI") < 0) {
+            symbol.name.indexOf("JNI") >= 0 &&
+            symbol.name.indexOf("RegisterNatives") >= 0 &&
+            symbol.name.indexOf("CheckJNI") < 0) {
             addrRegisterNatives = symbol.address;
             console.log("RegisterNatives is at ", symbol.address, symbol.name);
         }
@@ -47,7 +47,6 @@ function rpc_natives() {
         Interceptor.attach(addrRegisterNatives, {
             onEnter: function (args) {
                 console.log("[RegisterNatives] method_count:", args[3]);
-                var env = args[0];
                 ENV = args[0];
                 var java_class = args[1];
                 JCLZ = args[1];
@@ -66,14 +65,14 @@ function rpc_natives() {
                     var sig = Memory.readCString(sig_ptr);
                     var find_module = Process.findModuleByAddress(fnPtr_ptr);
                     console.log("[RegisterNatives] java_class:", class_name, "name:", name, "sig:", sig, "fnPtr:", fnPtr_ptr, "module_name:", find_module.name, "module_base:", find_module.base, "offset:", ptr(fnPtr_ptr).sub(find_module.base));
-                    if(name.indexOf("method01")>=0){
+                    if (name.indexOf("method01") >= 0) {
                         //hookmethod(fnPtr_ptr);
                         //replacehook(fnPtr_ptr);
                         method01addr = fnPtr_ptr;
-                    }else if (name.indexOf("method02")>=0){
+                    } else if (name.indexOf("method02") >= 0) {
                         method02addr = fnPtr_ptr;
-                        method02 = new NativeFunction(method02addr,'pointer',['pointer','pointer','pointer']);
-                    }else{
+                        method02 = new NativeFunction(method02addr, 'pointer', ['pointer', 'pointer', 'pointer']);
+                    } else {
                         continue;
                     }
 
@@ -84,37 +83,38 @@ function rpc_natives() {
 }
 
 
-function invokemethod01(contents){
-    
-    console.log("method01_addr is =>",method01addr)
-    var method01 = new NativeFunction(method01addr,'pointer',['pointer','pointer','pointer']);
-    var NewStringUTF = new NativeFunction(addrNewStringUTF,'pointer',['pointer','pointer'])
+function invokemethod01(contents) {
+
+    console.log("method01_addr is =>", method01addr)
+    var method01 = new NativeFunction(method01addr, 'pointer', ['pointer', 'pointer', 'pointer']);
+    var NewStringUTF = new NativeFunction(addrNewStringUTF, 'pointer', ['pointer', 'pointer'])
     var result = null;
-    Java.perform(function(){    
-        console.log("Java.vm.getEnv()",Java.vm.getEnv())
-        var JSTRING = NewStringUTF(Java.vm.getEnv(),Memory.allocUtf8String(contents))
-        result = method01(Java.vm.getEnv(),JSTRING,JSTRING);
-        console.log("result is =>",result)
-        console.log("result is ",Java.vm.getEnv().getStringUtfChars(result, null).readCString())
+    Java.perform(function () {
+        console.log("Java.vm.getEnv()", Java.vm.getEnv())
+        var JSTRING = NewStringUTF(Java.vm.getEnv(), Memory.allocUtf8String(contents))
+        result = method01(Java.vm.getEnv(), JSTRING, JSTRING);
+        console.log("result is =>", result)
+        console.log("result is ", Java.vm.getEnv().getStringUtfChars(result, null).readCString())
         result = Java.vm.getEnv().getStringUtfChars(result, null).readCString();
-        
+
 
     })
     return result;
 }
 
-function invokemethod02(contents){
+function invokemethod02(contents) {
     var result = null;
-    Java.perform(function(){    
-        var JSTRING = NewStringUTF(Java.vm.getEnv(),Memory.allocUtf8String(contents))
-        result = method02(Java.vm.getEnv(),JSTRING,JSTRING);
+    Java.perform(function () {
+        var JSTRING = NewStringUTF(Java.vm.getEnv(), Memory.allocUtf8String(contents))
+        result = method02(Java.vm.getEnv(), JSTRING, JSTRING);
         result = Java.vm.getEnv().getStringUtfChars(result, null).readCString();
     })
     return result;
 }
+
 rpc.exports = {
-    invoke1:invokemethod01,
-    invoke2:invokemethod02
+    invoke1: invokemethod01,
+    invoke2: invokemethod02
 };
 
 setImmediate(rpc_natives);
