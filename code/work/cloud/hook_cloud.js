@@ -29,8 +29,22 @@ function hook_serialdata() {
     })
 }
 
+function hook_encrypt() {
+    var JNI_address = Module.findExportByName('libpoison.so', 'AES_encrypt');
+    console.log("JNI_address", JNI_address)
 
-function hook_native() {
+    Interceptor.attach(JNI_address, {
+            onEnter: function (args) {
+                var args0 = Memory.readCString(args[0]);
+                console.log("args0:", args0)
+            },
+            onLeave: function (retval) {
+            }
+        }
+    )
+}
+
+function hook_set_encrypt() {
     var JNI_address = Module.findExportByName('libpoison.so', 'AES_set_encrypt_key');
     // 偏移量 = 符号地址 - so地址 = start（ida 最左边function_name 右拉 ）
     console.log("JNI_address", JNI_address)
@@ -102,9 +116,10 @@ function hook_salt_result() {
 function main() {
     // hook_new()
     // hook_serialdata()
-    // hook_native()
+    // hook_set_encrypt()
     // hook_salt()
     // hook_salt_result()
+    // hook_encrypt()
 }
 
 
