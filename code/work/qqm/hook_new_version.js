@@ -1,4 +1,21 @@
 // version 10.11.5.11
+
+// com.tencent.qqmusicplayerprocess.network.a.a.b$b.b -> 返回值
+function hook_network_base() {
+    Java.perform(function () {
+        console.log("hook starting....")
+         var String = Java.use('java.lang.String')
+        Java.choose('com.tencent.qqmusicplayerprocess.network.base.a', {
+            onMatch: function (instance) {
+                console.log("instance.value:=>", String.$new(instance.b.value))
+            },
+            onComplete() {
+            }
+        })
+    })
+}
+
+
 function hook_parser() {
     Java.perform(function () {
         console.log("hook starting....")
@@ -110,6 +127,7 @@ function hook_network_ab() {
 }
 
 function main() {
+    hook_network_base()
     // hook_parser()
     // hook_cgi_response()
     //hook_cgi_abc()
