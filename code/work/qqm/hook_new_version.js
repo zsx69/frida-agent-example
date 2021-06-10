@@ -117,7 +117,7 @@ function hook_network_ab() {
         nameClass.a.overload('[B', 'int').implementation = function (v1, v2) {
             // console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Throwable").$new()));
             // 秘文 can't decode byte
-            console.log("v1:->", v1)
+            console.log("v1:->", String.$new(v1))
             console.log("v1:->", v2)
             var result = this.a(v1, v2);
             console.log("result:", String.$new(result))
@@ -127,14 +127,14 @@ function hook_network_ab() {
 }
 
 function main() {
-    hook_network_base()
+    // hook_network_base()
     // hook_parser()
     // hook_cgi_response()
     //hook_cgi_abc()
     // hook_cgi_response_a()
     // hook_network_agf()
     // hook_network_aga()
-    // hook_network_ab()
+    hook_network_ab()
 }
 
 setImmediate(main)
