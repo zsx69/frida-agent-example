@@ -46,6 +46,23 @@ function hook_B90() {
     })
 }
 
+function hook_x0() {
+    // hook寄存器地址，得到对比的正确的base64
+    var libnative_addr = Module.findBaseAddress('libnative-lib.so');
+    console.log("so base address ->", libnative_addr)
+    var addr_0x8B0 = libnative_addr.add(0x8B0);
+    console.log("addr_0x8B0 ->", addr_0x8B0)
+    Interceptor.attach(addr_0x8B0, {
+        onEnter: function (args) {
+            // console.log(this.context.x2);
+            console.log(Memory.readByteArray(this.context.x0, 50));
+            // console.log(hexdump(this.c   ontext.x0));
+        },
+        onLeave: function (retval) {
+        }
+    })
+}
+
 
 function hook_D90() {
     var libnative_addr = Module.findBaseAddress('libnative-lib.so');
@@ -149,4 +166,4 @@ function hook_D58() {
 }
 
 
-setImmediate(hook_D58)
+setImmediate(hook_x9_v2)
