@@ -16,15 +16,16 @@ def get_response():
 
 
 def encrypt(data):
-    url = "http://192.168.2.152:9999"
+    url = "http://192.168.0.112:8889"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    # print(requests.post(url=url, data=data, headers=headers).text)
-    r = json.loads(requests.post(url=url, data=data, headers=headers).text)
+    res = requests.post(url=url, data=data, headers=headers).text
+    print(res)
+    # r = json.loads(requests.post(url=url, data=data, headers=headers).text)
     # print(json.dumps(r, ensure_ascii=False, indent=5))
-    print(r['music.search.SearchBrokerCgiServer.DoSearchForQQMusicMobile']['data']["body"]["item_user"][0]['encrypt_uin'])
+    # print(r['music.search.SearchBrokerCgiServer.DoSearchForQQMusicMobile']['data']["body"]["item_user"][0]['encrypt_uin'])
 
 
 if __name__ == '__main__':
     # result = get_response()
-    s = "eAFsU+1u6zYMfRVBP4oNcBPb+WqMpgO2YQPWdkDQFhu2XBiyzTpqbcuh6CS9Qd79grLzdW9/2TySyEOew51MTQYy8j1JVkbBOBwM/PFwOh0FoSctKaT48mAwHXqybKxOexYUpsvek/v8iuYd8LdcPwGuAXu/mxb/w+B8/sj3H02iC5DRWc1MkZLRTsjEZB8yEjshM42QUpyjaeoWgS2hinX1ato4NRVBRTISUnpCtixi2B4RekOoDbax2HtCFooAVREX2jL6vxBfPCERcm0qzvN1qTPlki3NJq4VESAf+J6QpIlZt8XWgKTTy0yuQkcbwTbFWQnYEmB1Rv5VFwQoowMHa/AUu0w5ZKoi3TVPKpFRx4Mh2Ta0BJUxceasCcpYFUlTntK2WJNpnlnXrsPK9XeXrKnyT6DLSbmnje2I7wRrkHJjlhQ1tmOYmVQ7VhM91H/fX9vJ/VozQ6hS/KgpbjQP9YdjnZqqweLQT61T/l0S1dGiv+jTUmO2WvVWhclNL60W/fyXZGaz96v32cSO63+S/x5G8PD2vPn3T3wp/5pvruws8P0rmvnSE9I2CZ1reBRU/DSfR7dQ3k1Gg2k4Hg0Ht4s+lHc/M+fPuIq9803ZFKTZcHAhrbYx26cbhoUCUjLIw2EBnLYr7owj9u3SbB4NwuF+Fz6fGfmAvZyGY3WVdzI4LrZJSCXOYBeV2rV2ximBl8yp1srD7WWaTdj92rpQH7HB7DwzOLF4A2Bbnx5qGx89zIcVbCmuVQ7sBbdzO+F65QPGZSSuA0/IGrALB/xu1QDyyjsKCLwzDLfbfCpn29/QDwN/HPhBEEyC0XAYTKfhNBwF3Io9ErVuBTgNz+TSwk2bKJiENyPfH0xu+Ckvg+/YrgFlJHyx3++/AQAA//8BAAD//7ypfSs="
+    s = "AAAAAAB4AbVWbWvcRhD+K0WF+xDMSfJdcvbBYdwGl+DGTqlJS4MRe9LqtDmtVpFWJ8vGUEqhpbRN6EtC+kJMSz41gZa+kDSU/pm7c/MvOrsr6U53Z+O46X25Xe3szDwzz8zsgWYzB2ttY0mLk265pnFPa2vakuYgjrT2gWZHGHEWiWVA7L469DByQmLDxuM8bOs690jk3LpVv+WzHqvbgd5b63Zip1/rd97KDOPt7U3GKd3b2Wrub13hr11La3HHNIwa7xhgi7hKGSwTEmjtpmGsNleaK43WkuayqEscB8NncJXEVpcEjpVi0mXyi1xZCXGUZ2o78RTv8QhwCEQxCXo4IoELFw+KHVwzDqVZ0NkFwYltuIIDO8pCDurBvNbCwf7W5mCjhW3S2r9wQXgeu8z3WZo75zMRIfCzm2RWuXHRYLJxSBxPdrGHIpxEPmjPI5nVIYw2ozrV5aEeRswlPtYBNt6re5z6a0kMOJxOxVUpbHWzPs4EPNBpyaWmDnItltQi4gznIYoQjcH0vD4Iyc2EhkoDQVZFCVznWYiLSIq1BC1unITF9gkOeAkmjLCLI4Vm/fLO+hsdaaFmpYOOWZvz59UU2x7iVoQdEmGbgwe2K+wvAlxAVTZmsU5bm7OjzeLmKOYYggaWBDpQRmwWKJBC2B+oKNzYXdIodhAk8kBzfQRFJNhaypbJ7XFCe6JAaBITWxcSundRl3etXj0MemDjtEBKySky5OKTTEmWWxRz5JfZVuoXkEOkdtGFCj20Q4GUQCSCIudnR6bu6f7AOAM4ZNs+HmB/Ct8a1F6V6RVi0swqLkEklLFFpCiEypBUEM7YEHi7yO7LrnSgwd8MrWeyGHqMMyvAqb5jmOZVQ/zMjSvbA968nlzb7ubIVaE0oXoI96FkNMEgxWNBm/Lr6QR46ZVUiec84f+3QosJJT6CySIacJCITnSgDUhMYNzAVlaQi4K4XMtOW92JCq5+UXQuv0WOWoqU0kwWnUqDtrN+/M2Hzx/8Onx6B5iTn2ntG5NEjO5+N370AxyejwBBn/LUfJMPwoL6PsrUoDupHSwiUiMzXl+PG8Z7oU9zIsHAPhNZUp0j1sPTbbZojt7FGkyQFaNpNkxz1VzO20ill6ueAidyuFZkZSAX1VlqSZNwqVJgquueaBySoyybkgmGzD0kziwWy5Ilk9Q8/+DH0dPfhs8+Gd97eN4ELRuXN1ca5rtXydb1+s1QNN7zJQi/43HH2Lq0v+HPJ2j0+YPx9w/B3/G9P0bv3wfODf86Ov74l9GdR//8fX/457dg9rR+n5c792C6ZNN9cS6kbrWL1VzxCurk6svwVqo9wyiymGtxBspBUiZavMhOzK/yY3EXPatHZbaXD3dF5Yknkaj9omgLbo8ffzr67GvwppKWGJ6bWX2mA8ODicIkTUKfIUfnlk0bliqmMOnCVPB0s7HcahWFOBfwNE3zd5cwB6MOGsEu+DkgDpbPxVnfQGyiJN+UMzhkMbfkVYuyCFdV0gxFnMCcm+75wydfjo9uj+9+dPzT0SsiARPlolcozOXDsBgBOIpZAGOeoh7aJ0H1jXjy2CzES+em29J/Ca9ZDDoGjw87gCDCI2gqmjSLkENkPIscD588G3/x+Pir30e3f35x4FLddFFUS6CSFyn7siFfWj0V8uHhv2DdmSQ="
     encrypt(s)
