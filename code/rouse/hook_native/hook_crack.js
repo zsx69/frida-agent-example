@@ -1,7 +1,7 @@
 // 32位寄存器位R 64位寄存器为X
 // com.yaotong.crackme
 
-function hook_r3() {
+function hook_content() {
     // hook寄存器地址，得到对比的正确的base64
     var libcrackme_addr = Module.findBaseAddress('libcrackme.so');
     console.log("so base address ->", libcrackme_addr)
@@ -18,7 +18,7 @@ function hook_r3() {
 }
 
 
-function hook_crack() {
+function patch_crack() {
     var libcrackme_addr = Module.findBaseAddress('libcrackme.so');
     var left = libcrackme_addr.add(0x12A8);
     console.log("left address ->", left)
@@ -36,8 +36,8 @@ function hook_crack() {
         cw.flush()
     });
 
-    console.log("addr_0x12A8_after ->", hexdump(left))
+    console.log("addr_0x12A8_after ->", Memory.readCString(left))
 }
 
 
-setImmediate(hook_crack)
+setImmediate(patch_crack)
